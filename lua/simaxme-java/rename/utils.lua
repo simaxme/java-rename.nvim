@@ -2,7 +2,7 @@ local utils = {}
 
 -- split a string
 function utils.split(pString, pPattern)
-   local Table = {}  -- NOTE: use {n = 0} in Lua-5.0
+   local Table = {}  -- NOTE: {n = 0} in Lua-5.0
    local fpat = "(.-)" .. pPattern
    local last_end = 1
    local s, e, cap = pString:find(fpat, 1)
