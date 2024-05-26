@@ -44,8 +44,6 @@ end
 
 -- list all files in a folder using recursive
 function utils.list_folder_contents_recursive(folder)
-   vim.notify("SHOW FOLDER" .. folder)
-
    local result = {}
 
    local handle = io.popen("cd '" .. folder .. "' && find * -type f")
