@@ -2,6 +2,7 @@ local file_refactor = {}
 
 local buffer = require("simaxme-java.rename.buffer")
 local options = require("simaxme-java.rename.options")
+local utils = require("simaxme-java.rename.utils")
 
 local changes = {}
 
@@ -23,8 +24,6 @@ local function read_buffer(bufnumber)
 end
 
 local function read_file(path)
-    vim.notify(path)
-
     local file = io.open(path, "rb")
     local content = file:read("*a")
     file:close()
@@ -33,6 +32,8 @@ end
 
 
 function file_refactor.get_file_content(path)
+    path = utils.realpath(path)
+
     local content
 
     if changes[path] ~= nil then
@@ -60,6 +61,8 @@ function file_refactor.clear_rewrite_request()
 end
 
 function file_refactor.add_rewrite_request(path, new_content)
+    path = utils.realpath(path)
+
     if changes[path] ~= nil then
         changes[path].new_content = new_content
         return
@@ -77,6 +80,8 @@ end
 -- @param regex the regex to search for
 -- @param dist the destination value to write
 function file_refactor.replace_buffer(path, regex, dist)
+    path = utils.realpath(path)
+
     local line_result = file_refactor.get_file_content(path)
 
     local result = line_result:gsub(regex, dist)
@@ -84,6 +89,7 @@ function file_refactor.replace_buffer(path, regex, dist)
     file_refactor.add_rewrite_request(path, result)
 end
 
+local telescope = require("simaxme-java.rename.telescope")
 function file_refactor.write_requests()
     local rename_options = options.get_rename_options()
 
@@ -92,6 +98,8 @@ function file_refactor.write_requests()
             buffer.open(key)
             buffer.write_buffer_lines(value.new_content)
         end
+    else
+        telescope.open_window(changes)
     end
 end
 

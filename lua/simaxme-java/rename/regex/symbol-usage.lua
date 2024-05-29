@@ -16,6 +16,7 @@ end
 -- @param old_class_name the old class name
 -- @param new_class_name the new class name
 function symbol_usage.replace_symbol_usage(file_path, old_class_name, new_class_name)
+
     local regex = symbol_usage.generate_regex(old_class_name)
 
     -- local lines = buffer.read_buffer_lines()
