@@ -54,7 +54,6 @@ function java_rename.rename_file(old_name, new_name)
     java_rename.on_rename_file(old_name, new_name)
 end
 
-
 -- handles a file rename and will update each java class file automatically
 -- this function should be executed *after* the file was renamed
 -- @param old_name the old/current file path that should be absolute or relative to the project root
@@ -124,7 +123,8 @@ function java_rename.on_rename_file(old_name, new_name, is_package_rename)
 
     -- fix import declarations -> remove import statements for classes in new folder and add import statements for classes in old folder
     if not is_package_rename then
-        regex_fix_import_declaration.fix_import_declarations(old_folder, new_folder, old_class_path, new_class_path, old_class_name)
+        regex_fix_import_declaration.fix_import_declarations(old_folder, new_folder, old_class_path, new_class_path,
+            old_class_name)
     end
 
     -- search occurences of the old class name
@@ -167,6 +167,4 @@ function java_rename.setup(opts)
     end
 end
 
-
 return java_rename
-
